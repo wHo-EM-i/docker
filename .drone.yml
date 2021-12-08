@@ -1,0 +1,13 @@
+sudo: required
+
+language: bash
+
+dist: trusty
+
+services:
+  - docker
+
+script:
+  - docker build -f Dockerfile . -t who-em-i/docker:latest
+  - echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u "whoemi" --password-stdin
+  - docker push who-em-i/docker:latest
