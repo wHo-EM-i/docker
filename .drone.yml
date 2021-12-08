@@ -1,13 +1,17 @@
-sudo: required
+---
+kind: pipeline
+name: default
 
-language: bash
-
-dist: trusty
-
-services:
-  - docker
-
-script:
+steps:
+- name: test
+  image: docker:dind
+  volumes:
+  - name: dockersock
+    path: /var/run/docker.sock
+  commands:
+  - docker ps -a
   - docker build -f Dockerfile . -t who-em-i/docker:latest
   - echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login -u "whoemi" --password-stdin
   - docker push who-em-i/docker:latest
+
+...
